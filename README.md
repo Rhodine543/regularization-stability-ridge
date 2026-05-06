@@ -87,37 +87,54 @@ Key findings:
 ---
 
 ## Project Structure
-data/
-communities.data
 
-src/
-main.py
-models.py
-stability.py
+```text
+regularization-stability-ridge/
+│
+├── data/
+│   └── communities.data
+│
+├── src/
+│   ├── main.py
+│   ├── models.py
+│   └── stability.py
+│
+├── results/
+│   ├── communities_error_results.csv
+│   ├── communities_stability_results.csv
+│   ├── communities_results_with_stability.csv
+│   ├── communities_dataset_size_results.csv
+│   └── plots_communities/
+│       ├── error_vs_alpha.png
+│       ├── test_error_vs_alpha.png
+│       ├── stability_vs_alpha.png
+│       ├── stability_vs_test_error.png
+│       ├── stability_vs_dataset_size.png
+│       └── test_error_vs_dataset_size.png
+│
+├── README.md
+├── requirements.txt
+└── report.pdf
 
-results/
-communities_error_results.csv
-communities_stability_results.csv
-communities_results_with_stability.csv
-communities_dataset_size_results.csv
-plots_communities/
 
 
 ---
+---
+
 ## Requirements
 
-Install dependencies with:
+The project uses the following Python libraries:
 
-```bash
-pip install -r requirements.txt
+```text
+numpy>=1.24
+pandas>=2.0
+matplotlib>=3.7
 
-## How to Run
+```
 
-1. Install dependencies:
+## How To Run 
 
-```bash
-pip install -r requirements.txt
-
+1. Install dependencies
 2. Run the main script
 
 ```bash
@@ -129,3 +146,8 @@ train the models
 compute stability
 generate plots
 save results in the results/ folder
+
+
+
+
+
