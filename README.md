@@ -116,7 +116,7 @@ regularization-stability-ridge/
 ├── requirements.txt
 └── report.pdf
 
-
+```
 
 ---
 ---
@@ -134,18 +134,49 @@ matplotlib>=3.7
 
 ## How To Run 
 
-1. Install dependencies
-2. Run the main script
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/rhodine543/regularization-stability-ridge.git
+```
+
+2. Navigate into the project directory:
+
+```bash
+cd regularization-stability-ridge
+```
+
+3. Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+4. Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+5. Run the main script:
 
 ```bash
 python src/main.py
+```
 
-This will:
+The script will:
+- Train OLS and Ridge regression models
+- Compute training and test error
+- Estimate algorithmic stability
+- Generate plots and CSV result files
 
-train the models
-compute stability
-generate plots
-save results in the results/ folder
+All outputs are saved in the `results/` directory.
+
+
+
+
 
 
 
