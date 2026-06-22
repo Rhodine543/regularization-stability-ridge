@@ -1,184 +1,174 @@
+# Regularization, Stability and Generalization
 
-# Regularization, Stability, and Generalization in Ridge Regression
+This project investigates the relationship between **regularization strength**, **algorithmic stability**, and **generalization performance**, following the ideas introduced in:
 
-## Overview
+> Bousquet, O., & Elisseeff, A. (2002). *Stability and Generalization*. Journal of Machine Learning Research.
 
-This project studies the relationship between **regularization**, **algorithmic stability**, and **generalization** in supervised learning. The analysis is based on ridge regression implemented from scratch using NumPy.
-
-The main goal is to empirically investigate how the regularization parameter affects:
-- training error
-- test error
-- stability of the learning algorithm
+The project  studies how **L2 regularization (Ridge Regression)** influences the stability of a learning algorithm and its ability to generalize to unseen data.
 
 ---
 
-## Dataset
+## Objective
 
-The experiments are conducted using the **Communities and Crime dataset** from the UCI Machine Learning Repository.
+The goal of this project is to investigate the relationship between:
 
-- Observations: 1994
-- Features: ~100 (after preprocessing)
+- Regularization strength (α)
+- Algorithmic stability
+- Generalization performance
 
-### Preprocessing steps:
-- Removed non-predictive identifier columns
-- Dropped columns with more than 50% missing values
-- Replaced remaining missing values using mean imputation
-- Standardized all features using training set statistics
+The study folllows the implemenation of two different datsets;
 
-The target variable represents the **violent crime rate per population**, treated as a continuous variable.
+- a **synthetic regression dataset**, where the data-generating process is controlled,
+- a **real-world regression dataset** (Communities and Crime), to validate the observations in practice.
 
 ---
 
-## Methods
+## Methodology
 
-### Models
-- Ordinary Least Squares (OLS)
-- Ridge Regression
+For each value of the regularization parameter α:
 
-Both models are implemented from scratch.
-
----
-
-### Stability Measure
-
-Stability is estimated using a leave-one-out approach:
-- Remove one training point
-- Retrain the model
-- Measure the change in predictions on a fixed test set
-
-The stability metric is defined as:
-- **Average absolute change in predictions**
+1. Split the dataset into training and testing sets.
+2. Standardize the predictors using statistics computed from the training set.
+3. Add an intercept term.
+4. Train:
+   - Ordinary Least Squares (α = 0)
+   - Ridge Regression (α > 0)
+5. Compute:
+   - Training Mean Squared Error
+   - Test Mean Squared Error
+6. Estimate algorithmic stability by:
+   - removing one training observation,
+   - retraining the model,
+   - measuring the average change in predictions on a fixed test set.
 
 ---
 
-## Experiments
+## Datasets
 
-### 1. Regularization vs Performance
-- Train models for different values of α
-- Measure:
-  - Training MSE
-  - Test MSE
+### 1. Synthetic Dataset
 
-### 2. Regularization vs Stability
-- Compute stability for each α
-- Plot stability against regularization strength
+The synthetic dataset is generated from a known linear model with Gaussian noise.
 
-### 3. Stability vs Generalization
-- Analyze the relationship between stability and test error
-- Compute correlation between the two
+Characteristics:
 
-### 4. Dataset Size Extension
-- Fix α
-- Vary training dataset size
-- Measure stability and test error
+Dataset characteristics:
+
+- 200 observations
+- 80 predictor variables
+- 40 independent Gaussian features
+- 40 highly correlated features created as noisy copies of the first 40 variables
+- Linear target generated with additive Gaussian noise
+The deliberate introduction of multicollinearity makes the ordinary least squares solution unstable, providing an ideal setting for evaluating the stabilizing effect of ridge regression.
+
+---
+
+### 2. Communities and Crime Dataset
+
+The Communities and Crime dataset is obtained from the UCI Machine Learning Repository.
+
+Preprocessing steps:
+
+- Removal of identifier variables
+- Removal of variables with excessive missing values
+- Mean imputation for remaining missing values
+- Feature standardization
+
+This dataset serves as a real-world validation of the observations obtained from the synthetic experiment.
+
+---
+
+## Stability Metric
+
+Algorithmic stability is estimated using a leave-one-out procedure.
+
+For each training observation:
+
+- remove one observation,
+- retrain the model,
+- predict on the same test set,
+- compute the average absolute prediction difference.
+
+Smaller prediction changes indicate a more stable learning algorithm.
 
 ---
 
 ## Results
 
-Key findings:
+For each dataset the following analyses are performed:
 
-- Increasing regularization improves stability
-- Moderate regularization improves generalization
-- Excessive regularization leads to underfitting
-- More stable models tend to have lower test error
-- Larger datasets improve both stability and generalization
+- Train Error vs Regularization
+- Test Error vs Regularization
+- Stability vs Regularization
+- Stability vs Test Error
+
+The project compares how regularization affects both prediction accuracy and algorithmic stability under controlled and real-world conditions.
 
 ---
 
-## Project Structure
+## Repository Structure
 
-```text
-regularization-stability-ridge/
+```
+regularization_stability_project/
+
 │
+
 ├── data/
 │   └── communities.data
+│
+├── results/
+│   ├── synthetic/
+│   └── communities/
 │
 ├── src/
 │   ├── main.py
 │   ├── models.py
-│   └── stability.py
-│
-├── results/
-│   ├── communities_error_results.csv
-│   ├── communities_stability_results.csv
-│   ├── communities_results_with_stability.csv
-│   ├── communities_dataset_size_results.csv
-│   └── plots_communities/
-│       ├── error_vs_alpha.png
-│       ├── test_error_vs_alpha.png
-│       ├── stability_vs_alpha.png
-│       ├── stability_vs_test_error.png
-│       ├── stability_vs_dataset_size.png
-│       └── test_error_vs_dataset_size.png
+│   ├── stability.py
+│   └── synthetic_data.py
 │
 ├── README.md
-├── requirements.txt
-└── report.pdf
-
+└── requirements.txt
 ```
 
 ---
+
+## Main Findings
+
+The experiments show that:
+
+- Moderate L2 regularization generally improves generalization performance.
+- Ridge regression produces more stable models than ordinary least squares.
+- Excessive regularization increases bias and eventually degrades predictive performance.
+- The relationship between stability and generalization is clearer in the synthetic dataset than in the real-world dataset due to the additional complexity and noise present in real data.
+
 ---
 
 ## Requirements
 
-The project uses the following Python libraries:
+Python 3.11+
 
-```text
-numpy>=1.24
-pandas>=2.0
-matplotlib>=3.7
-
-```
-
-## How To Run 
-
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/rhodine543/regularization-stability-ridge.git
-```
-
-2. Navigate into the project directory:
-
-```bash
-cd regularization-stability-ridge
-```
-
-3. Create and activate a virtual environment:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-4. Install the required dependencies:
+Install the required packages:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-5. Run the main script:
+---
+
+## Running the Project
 
 ```bash
 python src/main.py
 ```
 
-The script will:
-- Train OLS and Ridge regression models
-- Compute training and test error
-- Estimate algorithmic stability
-- Generate plots and CSV result files
+Running the script automatically:
 
-All outputs are saved in the `results/` directory.
+- generates the synthetic dataset,
+- preprocesses the Communities and Crime dataset,
+- trains OLS and Ridge models,
+- computes stability metrics,
+- produces plots,
+- exports the experimental results.
 
-
-
-
-
-
-
+---
 
 
